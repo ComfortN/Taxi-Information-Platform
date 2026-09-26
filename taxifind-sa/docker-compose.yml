@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: taxifind-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: taxifind
+      POSTGRES_USER: taxifind
+      POSTGRES_PASSWORD: taxifind
+
+    ports:
+      - "5434:5432"
+
+    volumes:
+      - taxifind_postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taxifind -d taxifind"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  taxifind_postgres_data:
